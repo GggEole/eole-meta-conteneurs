@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<creole>
+
+    <files>
+        <file filelist='ad-files' 
+              name='/etc/eole/conteneur-vars.conf'                          
+              rm='True'/>
+              
+    </files>
+
+    <variables>
+        <family name='services'>
+             <variable name='nombre_conteneur' type='string' description="Nombre de conteneur à activer">
+                <value>1</value>
+            </variable>
+        </family>
+    </variables>
+
+    <constraints>
+        <condition name='disabled_if_in' source='nombre_conteneur'>
+            <param>0</param>
+            <target type='family'>Conteneur-1</target>
+        </condition>
+        <condition name='disabled_if_in' source='nombre_conteneur'>
+            <param>0</param>
+            <param>1</param>
+            <target type='family'>Conteneur-2</target>
+        </condition>
+        <condition name='disabled_if_in' source='nombre_conteneur'>
+            <param>0</param>
+            <param>1</param>
+            <param>2</param>
+            <target type='family'>Conteneur-3</target>
+        </condition>
+        <condition name='disabled_if_in' source='nombre_conteneur'>
+            <param>0</param>
+            <param>1</param>
+            <param>2</param>
+            <param>3</param>
+            <target type='family'>Conteneur-4</target>
+        </condition>
+        <condition name='disabled_if_in' source='nombre_conteneur'>
+            <param>0</param>
+            <param>1</param>
+            <param>2</param>
+            <param>3</param>
+            <param>4</param>
+            <target type='family'>Conteneur-5</target>
+        </condition>
+    </constraints>
+
+</creole>

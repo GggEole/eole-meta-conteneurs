@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<creole>
+
+    <variables>
+        <family name='Conteneur-4' icon='anchor'>
+             <variable name='conteneur4_name'        
+                       type='string' 
+                       description="Nom du conteneur"
+                       mandatory='True'/>
+                       
+             <variable name='conteneur4_type'        
+                       type='string' 
+                       description="Type de technologie"
+                       mandatory='True'/>
+                       
+             <variable name='conteneur4_url'        
+                       type='string' 
+                       description="Url du conteneur"
+                       mandatory='False'/>
+                       
+             <variable name='conteneur4_tag'        
+                       type='string' 
+                       description="Tag de version du conteneur"
+                       mandatory='False'/>
+                       
+             <variable name='conteneur4_repository'        
+                       type='string' 
+                       description="Url du repository"
+                       mandatory='False'/>
+                       
+             <variable name='conteneur4_mountpoint_in'     
+                       type='string' 
+                       description="Volumes partagés dans le conteneur"
+                       multi='True'/>
+             
+             <variable name='conteneur4_mountpoint_out'     
+                       type='string' 
+                       description="Volumes partagés par le module"/>
+
+             <variable name='conteneur4_port_in'     
+                       type='string' 
+                       description="Port IP exposé dans le conteneur"
+                       multi='True'/>
+             
+             <variable name='conteneur4_port_out'     
+                       type='string' 
+                       description="Port IP exposé par le module"/>
+
+        </family>
+
+    </variables>
+
+    <constraints>
+       <check name='valid_enum' target='conteneur4_type'>
+             <param>['docker','docker-git', 'snap', 'snapcraft', 'vagrant', 'qemu', 'jboss']</param>
+             <param name='checkval'>False</param>
+        </check>
+    
+        <group master='conteneur4_mountpoint_in'>
+            <slave>conteneur4_mountpoint_out</slave>
+        </group>
+
+        <group master='conteneur4_port_in'>
+            <slave>conteneur4_port_out</slave>
+        </group>
+
+    </constraints>
+
+</creole>

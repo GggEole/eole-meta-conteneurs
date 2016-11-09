@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#set -e
+
+. /usr/lib/eole/ihm.sh
+. /usr/lib/eole/eole3.sh
+
+EOLE3_VARS=/etc/eole/conteneur-vars.conf
+if [ -f "${EOLE3_VARS}" ]
+then
+    . "${EOLE3_VARS}"
+else
+    # Template is disabled => eole3 is disabled
+    exit 0
+fi
+
+RECONFIGURE="$1"
+for no in $(seq 1 5)
+do
+    doPostTemplate "$no" "$RECONFIGURE" 
+done

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+#%for %%int_idx in %%range(0, %%int(%%nombre_interfaces))
+#/sbin/iptables -A eth%%int_idx-root -p tcp --syn -m multiport --dports 1024:5000 -j ACCEPT
+#/sbin/iptables -A eth%%int_idx-root -p udp -m multiport --dports 1024:5000 -j ACCEPT
+#%end for

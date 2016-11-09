@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<creole>
+
+    <variables>
+        <family name='Conteneur-2' icon='anchor'>
+             <variable name='conteneur2_name'        
+                       type='string' 
+                       description="Nom du conteneur"
+                       mandatory='True'/>
+                       
+             <variable name='conteneur2_type'        
+                       type='string' 
+                       description="Type de technologie"
+                       mandatory='True'/>
+                       
+             <variable name='conteneur2_url'        
+                       type='string' 
+                       description="Url du conteneur"
+                       mandatory='False'/>
+                       
+             <variable name='conteneur2_tag'        
+                       type='string' 
+                       description="Tag de version du conteneur"
+                       mandatory='False'/>
+                       
+             <variable name='conteneur2_repository'        
+                       type='string' 
+                       description="Url du repository"
+                       mandatory='False'/>
+                       
+             <variable name='conteneur2_mountpoint_in'     
+                       type='string' 
+                       description="Volumes partagés dans le conteneur"
+                       multi='True'/>
+             
+             <variable name='conteneur2_mountpoint_out'     
+                       type='string' 
+                       description="Volumes partagés par le module"/>
+
+             <variable name='conteneur2_port_in'     
+                       type='string' 
+                       description="Port IP exposé dans le conteneur"
+                       multi='True'/>
+             
+             <variable name='conteneur2_port_out'     
+                       type='string' 
+                       description="Port IP exposé par le module"/>
+
+        </family>
+
+    </variables>
+
+    <constraints>
+       <check name='valid_enum' target='conteneur2_type'>
+             <param>['docker','docker-git', 'snap', 'snapcraft', 'vagrant', 'qemu', 'jboss']</param>
+             <param name='checkval'>False</param>
+        </check>
+    
+        <group master='conteneur2_mountpoint_in'>
+            <slave>conteneur2_mountpoint_out</slave>
+        </group>
+
+        <group master='conteneur2_port_in'>
+            <slave>conteneur2_port_out</slave>
+        </group>
+
+    </constraints>
+
+</creole>
