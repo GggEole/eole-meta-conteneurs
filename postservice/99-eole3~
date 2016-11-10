@@ -19,3 +19,6 @@ for no in $(seq 1 $NOMBRE_CONTENEURS)
 do
     doPostService "$no" "$RECONFIGURE"
 done
+
+service nginx reload
+

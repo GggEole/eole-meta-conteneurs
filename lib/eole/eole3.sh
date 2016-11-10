@@ -186,48 +186,51 @@ function doPostService()
 
 }
 
+function doPostTemplateInit()
+{
+    mkdir -p /etc/nginx/conteneur.d
+    cat >/etc/nginx/sites-available/conteneur.conf <<EOF
+server {
+  listen 80;
+    server_name eolebase.ac-test.lan;
+    include /etc/nginx/conteneur.d/*.conf;
+  }
+EOF
+    rm -f /etc/nginx/sites-enabled/conteneur.conf
+    ln -s /etc/nginx/sites-available/conteneur.conf /etc/nginx/sites-enabled/
+}
+
 function doPostTemplate()
 {
+    rm -f /etc/nginx/site-available/conteneur${1}.conf
+    rm -f /etc/nginx/site-enabled/conteneur${1}.conf
 	NAME=$(CreoleGet "conteneur${1}_name" "")
 	if [ -z "$NAME" ]
 	then
 		echo "conteneur : $1 non actif"
+        rm -f /etc/nginx/conteneur.d/conteneur${1}.conf
 		return 0
     fi
 	echo "conteneur : $1"
 
 	TYPE=$(CreoleGet "conteneur${1}_type")
 	SERVER_NAME=$(CreoleGet "ssl_server_name")
+	declare -a PORT_OUT
+	PORT_OUT=($(CreoleGet "conteneur${1}_port_out"))
+    if [ -z "${PORT_OUT[0]}" ]
+    then
+		echo "conteneur : $1 pas de port"
+        rm -f /etc/nginx/conteneur.d/conteneur${1}.conf
+		return 0
+    fi
 
-    cat >/etc/nginx/sites-available/conteneur${1}.conf <<EOF
-upstream $NAME {
-  server 127.0.0.1:8080 fail_timeout=0;
-}
-
-server {
-  listen 80;
-  server_name $SERVER_NAME;
-  return 301 https://$host$request_uri;
-}
-
-server {
-  listen 443 ssl;
-  server_name $SERVER_NAME;
-
-  ssl_certificate /etc/nginx/ssl/server.crt;
-  ssl_certificate_key /etc/nginx/ssl/server.key;
-
-  location /%%conteneur1_name {
-    proxy_set_header        Host $host:$server_port;
-    proxy_set_header        X-Real-IP $remote_addr;
-    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header        X-Forwarded-Proto $scheme;
-    proxy_redirect 			http:// https://;
-    proxy_pass              http://$NAME;
-  }
+    cat >/etc/nginx/conteneur.d/conteneur${1}.conf <<EOF
+location /$NAME {
+    proxy_set_header        Host \$host:\$server_port;
+    proxy_set_header        X-Real-IP \$remote_addr;
+    proxy_set_header        X-Forwarded-For \$proxy_add_x_forwarded_for;
+    proxy_set_header        X-Forwarded-Proto \$scheme;
+    proxy_pass              http://127.0.0.1:${PORT_OUT[0]};
 }
 EOF
-
-    rm -f /etc/nginx/sites-enabled/conteneur${1}.conf
-    ln -s /etc/nginx/sites-available/conteneur${1}.conf /etc/nginx/sites-enabled/
 }

@@ -15,10 +15,7 @@ else
 fi
 
 RECONFIGURE="$1"
-for no in $(seq 1 $NOMBRE_CONTENEURS)
+for no in $(seq 1 5)
 do
-    doPostService "$no" "$RECONFIGURE"
+    doPostTemplate "$no" "$RECONFIGURE" 
 done
-
-service nginx restart
-

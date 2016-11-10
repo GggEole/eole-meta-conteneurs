@@ -15,7 +15,8 @@ else
 fi
 
 RECONFIGURE="$1"
+doPostTemplateInit
 for no in $(seq 1 5)
 do
-    doPostTemplate "$no" "$RECONFIGURE" 
+    doPostTemplate "$no" "$RECONFIGURE"
 done
