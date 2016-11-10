@@ -162,7 +162,6 @@ function doPostService()
                     git pull
                 fi
                 cd /home/$NAME
-                VBoxManage --version
                 vagrant up &
             else
                 cd /home/$NAME
